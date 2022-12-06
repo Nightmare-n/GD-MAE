@@ -10,7 +10,7 @@ If you find this project useful in your research, please consider citing:
 @article{yang2022gdmae,
     author = {Honghui Yang and Tong He and Jiaheng Liu and Hua Chen and Boxi Wu and Binbin Lin and Xiaofei He and Wanli Ouyang},
     title = {GD-MAE: Generative Decoder for MAE Pre-training on LiDAR Point Clouds},
-    journal   = {arxiv},
+    journal = {arxiv},
     year = {2022},
 }
 ```
