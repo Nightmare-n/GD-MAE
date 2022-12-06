@@ -20,6 +20,7 @@ This project is mainly based on the following codebases. Thanks for their great 
 
 * [OpenPCDet](https://github.com/open-mmlab/OpenPCDet)
 * [SST](https://github.com/tusen-ai/SST)
+* [GraphRCNN](https://github.com/Nightmare-n/GraphRCNN)
 * [ONCE_Benchmark](https://github.com/PointsCoder/Once_Benchmark)
 * [MMDetection3D](https://github.com/open-mmlab/mmdetection3d)
 * [CenterPoint](https://github.com/tianweiy/CenterPoint)
