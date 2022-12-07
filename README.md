@@ -1,4 +1,4 @@
-[![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/placeholder)
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2212.03010)
 [![GitHub Stars](https://img.shields.io/github/stars/Nightmare-n/GD-MAE?style=social)](https://github.com/Nightmare-n/GD-MAE)
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=Nightmare-n/GD-MAE)
 
