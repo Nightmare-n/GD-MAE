@@ -68,7 +68,6 @@ MODEL:
                 [[64, 64, 128], [64, 64, 128], [64, 96, 128]],
                 [[128, 128, 256], [128, 192, 256], [128, 256, 256]]]
         AGGREGATION_MLPS: [[64], [128], [256]]
-        CONFIDENCE_MLPS: [[], [], []]
         WEIGHT_GAMMA: 1.0
         DILATED_RADIUS_GROUP: True
 
