@@ -107,6 +107,8 @@ bash scripts/dist_test.sh
 |[GD-MAE_iou (iou head)](tools/cfgs/waymo_models/gd_mae_iou.yaml)| 79.4/78.9|70.9/70.5|82.2/75.9|74.8/68.8|75.8/74.8|73.0/72.0| [log](https://drive.google.com/file/d/1-6tfzhdDIpv5UaOQrdE4LotA_1AE7ZAF/view?usp=sharing) |
 |[GD-MAE_ts (two-stage)](tools/cfgs/waymo_models/gd_mae_ts.yaml)| 80.2/79.8|72.4/72.0|83.1/76.7|75.5/69.4|77.2/76.2|74.4/73.4| [log](https://drive.google.com/file/d/1fOFQGmJcJK3qep44D1qca9Jk95mgfAdg/view?usp=sharing) |
 
+We could not provide the above pretrained models due to [Waymo Dataset License Agreement](https://waymo.com/open/terms/).
+
 ### KITTI
 |                                             | Easy | Moderate | Hard | Model |
 |---------------------------------------------|:-------:|:-------:|:-------:|:-------:|
