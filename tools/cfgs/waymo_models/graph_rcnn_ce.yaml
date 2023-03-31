@@ -1,0 +1,183 @@
+CLASS_NAMES: ['Vehicle', 'Pedestrian', 'Cyclist']
+
+DATA_CONFIG:
+    _BASE_CONFIG_: cfgs/dataset_configs/waymo_dataset.yaml
+
+    POINT_CLOUD_RANGE: [-75.2, -75.2, -2, 75.2, 75.2, 4]
+
+    DATA_SPLIT: {
+        'train': train,
+        'test': val
+    }
+
+    SAMPLED_INTERVAL: {
+        'train': 1,
+        'test': 1
+    }
+
+    DATA_PROCESSOR:
+      - NAME: shuffle_points
+        SHUFFLE_ENABLED: {
+          'train': True,
+          'test': False
+        }
+
+      - NAME: calculate_grid_size
+        VOXEL_SIZE: [0.1, 0.1, 0.15]
+
+MODEL:
+    NAME: GraphRCNN
+
+    FREEZE_LAYERS: ['DynVFE', 'VoxelResBackBone8x', 'HeightCompression', 'BaseBEVBackbone', 'CenterHead']
+
+    VFE:
+        NAME: DynVFE
+        TYPE: mean
+
+    BACKBONE_3D:
+        NAME: VoxelResBackBone8x
+
+    MAP_TO_BEV:
+        NAME: HeightCompression
+        NUM_BEV_FEATURES: 256
+
+    BACKBONE_2D:
+        NAME: BaseBEVBackbone
+
+        LAYER_NUMS: [5, 5]
+        LAYER_STRIDES: [1, 2]
+        NUM_FILTERS: [128, 256]
+        UPSAMPLE_STRIDES: [1, 2]
+        NUM_UPSAMPLE_FILTERS: [256, 256]
+
+    DENSE_HEAD:
+        NAME: CenterHead
+        CLASS_AGNOSTIC: False
+
+        CLASS_NAMES_EACH_HEAD: [
+            ['Vehicle', 'Pedestrian', 'Cyclist']
+        ]
+
+        SHARED_CONV_CHANNEL: 64
+        USE_BIAS_BEFORE_NORM: True
+        NUM_HM_CONV: 2
+        SEPARATE_HEAD_CFG:
+            HEAD_ORDER: ['center', 'center_z', 'dim', 'rot']
+            HEAD_DICT: {
+                'center': {'out_channels': 2, 'num_conv': 2},
+                'center_z': {'out_channels': 1, 'num_conv': 2},
+                'dim': {'out_channels': 3, 'num_conv': 2},
+                'rot': {'out_channels': 2, 'num_conv': 2},
+            }
+
+        TARGET_ASSIGNER_CONFIG:
+            FEATURE_MAP_STRIDE: 8
+            NUM_MAX_OBJS: 500
+            GAUSSIAN_OVERLAP: 0.1
+            MIN_RADIUS: 2
+
+        LOSS_CONFIG:
+            LOSS_WEIGHTS: {
+                'cls_weight': 1.0,
+                'loc_weight': 2.0,
+                'code_weights': [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+            }
+
+        POST_PROCESSING:
+            SCORE_THRESH: 0.1
+            POST_CENTER_LIMIT_RANGE: [-75.2, -75.2, -2, 75.2, 75.2, 4]
+            MAX_OBJ_PER_SAMPLE: 500
+            NMS_CONFIG:
+                NMS_TYPE: multi_class_nms
+                NMS_THRESH: [0.7, 0.55, 0.55]
+                NMS_PRE_MAXSIZE: [2048, 1024, 1024]
+                NMS_POST_MAXSIZE: [200, 150, 150]
+                IOU_RECTIFIER: [0., 0., 0.]
+
+    ROI_HEAD:
+        NAME: GraphRCNNHead
+        CLASS_AGNOSTIC: True
+
+        NMS_CONFIG:
+            TRAIN: None
+            TEST: None
+
+        DFVS_CONFIG:
+            NUM_DVS_POINTS: 1024
+            NUM_FPS_POINTS: 256
+            HASH_SIZE: 4099
+            LAMBDA: 0.18
+            DELTA: 50
+            POOL_EXTRA_WIDTH: [0.8, 0.8, 0.8]
+            NUM_BOXES_PER_PATCH: 32
+
+        ATTN_GNN_CONFIG:
+            IN_DIM: 11
+            OUT_DIM: 256
+            MLPS: [32, 32, 64]
+            CALIB_DIM: 64
+            EXP_MLPS: [512]
+            K: 8
+            USE_FEATS_DIS: False
+            USE_REDUCTION: True
+            USE_SHORT_CUT: True
+
+        TARGET_CONFIG:
+            BOX_CODER: ResidualCoder
+            BOX_CODER_CONFIG: {
+                'norm': False
+            }
+            ROI_PER_IMAGE: 128
+            FG_RATIO: 0.5
+
+            SAMPLE_ROI_BY_EACH_CLASS: True
+            CLS_SCORE_TYPE: roi_iou
+
+            CLS_FG_THRESH: 0.75
+            CLS_BG_THRESH: 0.25
+            CLS_BG_THRESH_LO: 0.1
+            HARD_BG_RATIO: 0.8
+
+            REG_FG_THRESH: 0.55
+
+        LOSS_CONFIG:
+            CLS_LOSS: BinaryCrossEntropy
+            REG_LOSS: WeightedL1Loss
+            CORNER_LOSS_REGULARIZATION: False
+            LOSS_WEIGHTS: {
+                'rcnn_cls_weight': 1.0,
+                'rcnn_reg_weight': 1.0,
+                'code_weights': [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+            }
+
+    POST_PROCESSING:
+        RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+        OUTPUT_RAW_SCORE: False
+        
+        EVAL_METRIC: waymo_custom
+
+        NMS_CONFIG:
+            MULTI_CLASSES_NMS: False
+            NMS: False
+
+OPTIMIZATION:
+    BATCH_SIZE_PER_GPU: 8
+    NUM_EPOCHS: 6
+
+    OPTIMIZER: adam_onecycle
+    LR: 0.003
+    WEIGHT_DECAY: 0.01
+    MOMENTUM: 0.9
+    SYNC_BN: True
+
+    MOMS: [0.95, 0.85]
+    PCT_START: 0.4
+    DIV_FACTOR: 10
+    DECAY_STEP_LIST: [35, 45]
+    LR_DECAY: 0.1
+    LR_CLIP: 0.0000001
+
+    LR_WARMUP: False
+    WARMUP_EPOCH: 1
+
+    GRAD_NORM_CLIP: 35

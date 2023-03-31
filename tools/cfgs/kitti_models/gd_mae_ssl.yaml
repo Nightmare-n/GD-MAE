@@ -1,0 +1,191 @@
+CLASS_NAMES: ['Car', 'Pedestrian', 'Cyclist']
+
+DATA_CONFIG:
+    _BASE_CONFIG_: cfgs/dataset_configs/kitti360_dataset.yaml
+    POINT_CLOUD_RANGE: [0, -39.68, -3, 69.12, 39.68, 1]
+
+    DATA_AUGMENTOR:
+        DISABLE_AUG_LIST: ['placeholder']
+        AUG_CONFIG_LIST:
+            - NAME: random_world_flip
+              PROBABILITY: 0.5
+              ALONG_AXIS_LIST: ['x']
+
+            - NAME: random_world_rotation
+              PROBABILITY: 1.0
+              WORLD_ROT_ANGLE: [-0.78539816, 0.78539816]
+
+            - NAME: random_world_scaling
+              PROBABILITY: 1.0
+              WORLD_SCALE_RANGE: [0.95, 1.05]
+
+    DATA_PROCESSOR:
+      - NAME: mask_points_and_boxes_outside_range
+        REMOVE_OUTSIDE_BOXES: True
+
+      - NAME: shuffle_points
+        SHUFFLE_ENABLED: {
+          'train': True,
+          'test': False
+        }
+
+      - NAME: calculate_grid_size
+        VOXEL_SIZE: [0.32, 0.32, 4]
+
+MODEL:
+    NAME: GDMAE
+
+    VFE:
+        NAME: DynVFE
+        TYPE: mean
+        WITH_DISTANCE: False
+        USE_ABSLOTE_XYZ: True
+        USE_CLUSTER_XYZ: True
+        MLPS: [[64, 128]]
+
+    BACKBONE_3D:
+        NAME: SPTBackboneMAE
+
+        SST_BLOCK_LIST:
+          - NAME: sst_block_x1
+            PREPROCESS:
+              WINDOW_SHAPE: [8, 8, 1]
+              DROP_INFO: {
+                'train': {
+                  '0': {'max_tokens': 16, 'drop_range': [0, 16]},
+                  '1': {'max_tokens': 32, 'drop_range': [16, 32]},
+                  '2': {'max_tokens': 64, 'drop_range': [32, 100000]}
+                },
+                'test': {
+                  '0': {'max_tokens': 16, 'drop_range': [0, 16]},
+                  '1': {'max_tokens': 32, 'drop_range': [16, 32]},
+                  '2': {'max_tokens': 64, 'drop_range': [32, 100000]}
+                }
+              }
+              SHUFFLE_VOXELS: False
+              POS_TEMPERATURE: 1000
+              NORMALIZE_POS: False
+
+            ENCODER:
+              NUM_BLOCKS: 2
+              STRIDE: 1
+              D_MODEL: 128
+              NHEAD: 8
+              DIM_FEEDFORWARD: 256
+              DROPOUT: 0.0
+              ACTIVATION: "gelu"
+              LAYER_CFG: {
+                'cosine': True,
+                'tau_min': 0.01
+              }
+
+          - NAME: sst_block_x2
+            PREPROCESS:
+              WINDOW_SHAPE: [8, 8, 1]
+              DROP_INFO: {
+                'train': {
+                  '0': {'max_tokens': 16, 'drop_range': [0, 16]},
+                  '1': {'max_tokens': 32, 'drop_range': [16, 32]},
+                  '2': {'max_tokens': 64, 'drop_range': [32, 100000]}
+                },
+                'test': {
+                  '0': {'max_tokens': 16, 'drop_range': [0, 16]},
+                  '1': {'max_tokens': 32, 'drop_range': [16, 32]},
+                  '2': {'max_tokens': 64, 'drop_range': [32, 100000]}
+                }
+              }
+              SHUFFLE_VOXELS: False
+              POS_TEMPERATURE: 1000
+              NORMALIZE_POS: False
+
+            ENCODER:
+              NUM_BLOCKS: 2
+              STRIDE: 2
+              D_MODEL: 256
+              NHEAD: 8
+              DIM_FEEDFORWARD: 512
+              DROPOUT: 0.0
+              ACTIVATION: "gelu"
+              LAYER_CFG: {
+                'cosine': True,
+                'tau_min': 0.01
+              }
+
+          - NAME: sst_block_x4
+            PREPROCESS:
+              WINDOW_SHAPE: [8, 8, 1]
+              DROP_INFO: {
+                'train': {
+                  '0': {'max_tokens': 16, 'drop_range': [0, 16]},
+                  '1': {'max_tokens': 32, 'drop_range': [16, 32]},
+                  '2': {'max_tokens': 64, 'drop_range': [32, 100000]}
+                },
+                'test': {
+                  '0': {'max_tokens': 16, 'drop_range': [0, 16]},
+                  '1': {'max_tokens': 32, 'drop_range': [16, 32]},
+                  '2': {'max_tokens': 64, 'drop_range': [32, 100000]}
+                }
+              }
+              SHUFFLE_VOXELS: False
+              POS_TEMPERATURE: 1000
+              NORMALIZE_POS: False
+
+            ENCODER:
+              NUM_BLOCKS: 2
+              STRIDE: 2
+              D_MODEL: 256
+              NHEAD: 8
+              DIM_FEEDFORWARD: 512
+              DROPOUT: 0.0
+              ACTIVATION: "gelu"
+              LAYER_CFG: {
+                'cosine': True,
+                'tau_min': 0.01
+              }
+
+        MASK_CONFIG:
+          RATIO: 0.85
+          NUM_PRD_POINTS: 16
+          NUM_GT_POINTS: 64
+
+        FEATURES_SOURCE: ['x_conv1', 'x_conv2', 'x_conv3']
+        FUSE_LAYER:
+          x_conv1:
+            UPSAMPLE_STRIDE: 1
+            NUM_FILTER: 128
+            NUM_UPSAMPLE_FILTER: 128
+          x_conv2:
+            UPSAMPLE_STRIDE: 2
+            NUM_FILTER: 256
+            NUM_UPSAMPLE_FILTER: 128
+          x_conv3:
+            UPSAMPLE_STRIDE: 4
+            NUM_FILTER: 256
+            NUM_UPSAMPLE_FILTER: 128
+
+    POST_PROCESSING:
+        RECALL_THRESH_LIST: [0.3, 0.5, 0.7]
+
+        EVAL_METRIC: kitti
+
+
+OPTIMIZATION:
+    BATCH_SIZE_PER_GPU: 16
+    NUM_EPOCHS: 80
+
+    OPTIMIZER: adam_onecycle
+    LR: 0.003
+    WEIGHT_DECAY: 0.01
+    MOMENTUM: 0.9
+
+    MOMS: [0.95, 0.85]
+    PCT_START: 0.4
+    DIV_FACTOR: 10
+    DECAY_STEP_LIST: [35, 45]
+    LR_DECAY: 0.1
+    LR_CLIP: 0.0000001
+
+    LR_WARMUP: False
+    WARMUP_EPOCH: 1
+
+    GRAD_NORM_CLIP: 10
