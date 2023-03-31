@@ -27,7 +27,7 @@ cd GD-MAE && python setup.py develop --user
 
 ## Data Preparation
 
-Please follow the [instruction](https://github.com/open-mmlab/OpenPCDet/blob/master/docs/GETTING_STARTED.md) of OpenPCDet to prepare the dataset. For the Waymo dataset, we use the [evaluation tookits](https://drive.google.com/drive/folders/1aa1kI9hhzBoZkIBcr8RBO3Zhg_RkOAag?usp=sharing) to evaluate detection results.
+Please follow the [instruction](https://github.com/open-mmlab/OpenPCDet/blob/master/docs/GETTING_STARTED.md) of OpenPCDet to prepare the dataset. For the Waymo dataset, we use the [evaluation toolkits](https://drive.google.com/drive/folders/1aa1kI9hhzBoZkIBcr8RBO3Zhg_RkOAag?usp=sharing) to evaluate detection results.
 ```
 data
 │── waymo
