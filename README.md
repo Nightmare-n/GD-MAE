@@ -102,10 +102,10 @@ bash scripts/dist_test.sh
 ### Waymo
 |                                             | Vec_L1 | Vec_L2 | Ped_L1 | Ped_L2 | Cyc_L1 | Cyc_L2 | Model |
 |---------------------------------------------|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
-|[Graph RCNN (w/o PointNet)](tools/cfgs/waymo_models/graph_rcnn_ce.yaml)| 80.57/80.09|72.30/71.85|82.86/77.28|75.02/69.70|77.16/76.01|74.38/73.28| [log](https://drive.google.com/file/d/1paPQ_c5ayGrbrVxGD9YtgBAy7TCMp2Gm/view?usp=sharing) |
-|[GD-MAE_0.2 (20% labeled data)](tools/cfgs/waymo_models/gd_mae.yaml)| 76.24/75.74|67.67/67.22|80.50/72.29|73.17/65.50|72.61/71.40|69.86/68.69| [log](https://drive.google.com/file/d/1TGoxSAJi6o6seA6XxASAajZrJ5jjqOJR/view?usp=sharing) |
-|[GD-MAE_iou (iou head)](tools/cfgs/waymo_models/gd_mae_iou.yaml)| 79.40/78.94|70.91/70.49|82.20/75.85|74.82/68.79|75.75/74.77|72.98/72.03| [log](https://drive.google.com/file/d/1-6tfzhdDIpv5UaOQrdE4LotA_1AE7ZAF/view?usp=sharing) |
-|[GD-MAE_ts (two-stage)](tools/cfgs/waymo_models/gd_mae_ts.yaml)| 80.21/79.77|72.37/71.96|83.10/76.72|75.54/69.43|77.19/76.16|74.41/73.40| [log](https://drive.google.com/file/d/1fOFQGmJcJK3qep44D1qca9Jk95mgfAdg/view?usp=sharing) |
+|[Graph RCNN (w/o PointNet)](tools/cfgs/waymo_models/graph_rcnn_ce.yaml)| 80.6/80.1|72.3/71.9|82.9/77.3|75.0/69.7|77.2/76.0|74.4/73.3| [log](https://drive.google.com/file/d/1paPQ_c5ayGrbrVxGD9YtgBAy7TCMp2Gm/view?usp=sharing) |
+|[GD-MAE_0.2 (20% labeled data)](tools/cfgs/waymo_models/gd_mae.yaml)| 76.2/75.7|67.7/67.2|80.5/72.3|73.2/65.5|72.6/71.4|69.9/68.7| [log](https://drive.google.com/file/d/1TGoxSAJi6o6seA6XxASAajZrJ5jjqOJR/view?usp=sharing) |
+|[GD-MAE_iou (iou head)](tools/cfgs/waymo_models/gd_mae_iou.yaml)| 79.4/78.9|70.9/70.5|82.2/75.9|74.8/68.8|75.8/74.8|73.0/72.0| [log](https://drive.google.com/file/d/1-6tfzhdDIpv5UaOQrdE4LotA_1AE7ZAF/view?usp=sharing) |
+|[GD-MAE_ts (two-stage)](tools/cfgs/waymo_models/gd_mae_ts.yaml)| 80.2/79.8|72.4/72.0|83.1/76.7|75.5/69.4|77.2/76.2|74.4/73.4| [log](https://drive.google.com/file/d/1fOFQGmJcJK3qep44D1qca9Jk95mgfAdg/view?usp=sharing) |
 
 ### KITTI
 |                                             | Easy | Moderate | Hard | Model |
