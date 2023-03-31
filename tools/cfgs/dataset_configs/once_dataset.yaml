@@ -1,16 +1,8 @@
 DATASET: 'ONCEDataset'
-DATA_PATH: '/nvme/yanghonghui/workspace/data/once'
+DATA_PATH: '../data/once'
 
 BACKEND: &BACKEND
-  NAME: PetrelBackend
-  KWARGS: {
-    'path_mapping': {
-      # '/mnt/petrelfs/yanghonghui': 's3://yanghonghui',
-      # '/workspace/data': 's3://yanghonghui',
-      '/nvme/yanghonghui/workspace/data': 's3://yanghonghui',
-    },
-    'enable_mc': True
-  }
+  NAME: HardDiskBackend
 
 POINT_CLOUD_RANGE: [-75.2, -75.2, -5.0, 75.2, 75.2, 3.0]
 

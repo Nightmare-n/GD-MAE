@@ -22,12 +22,6 @@ DATA_CONFIG:
 
             BACKEND:
               NAME: HardDiskBackend
-              KWARGS: {
-                # 'path_mapping': {
-                #   '/mnt/petrelfs/yanghonghui': 's3://yanghonghui'
-                # },
-                # 'enable_mc': True
-              }
 
             USE_ROAD_PLANE: False
             DB_INFO_PATH:

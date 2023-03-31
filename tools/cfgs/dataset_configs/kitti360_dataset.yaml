@@ -1,14 +1,8 @@
 DATASET: 'Kitti360Dataset'
-DATA_PATH: '/mnt/petrelfs/yanghonghui/kitti-360'
+DATA_PATH: '../data/kitti-360'
 
 BACKEND: &BACKEND
-  NAME: PetrelBackend
-  KWARGS: {
-    'path_mapping': {
-      '/mnt/petrelfs/yanghonghui': 's3://yanghonghui'
-    },
-    'enable_mc': True
-  }
+  NAME: HardDiskBackend
 
 POINT_CLOUD_RANGE: [0, -40, -3, 70.4, 40, 1]
 
@@ -23,12 +17,15 @@ DATA_AUGMENTOR:
     DISABLE_AUG_LIST: ['placeholder']
     AUG_CONFIG_LIST:
         - NAME: random_world_flip
+          PROBABILITY: 0.5
           ALONG_AXIS_LIST: ['x']
 
         - NAME: random_world_rotation
+          PROBABILITY: 1.0
           WORLD_ROT_ANGLE: [-0.78539816, 0.78539816]
 
         - NAME: random_world_scaling
+          PROBABILITY: 1.0
           WORLD_SCALE_RANGE: [0.95, 1.05]
 
 

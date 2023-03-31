@@ -11,13 +11,7 @@ DATA_CONFIG:
         AUG_CONFIG_LIST:
             - NAME: gt_sampling
               BACKEND:
-                  NAME: PetrelBackend
-                  KWARGS: {
-                    'path_mapping': {
-                      '/mnt/petrelfs/yanghonghui': 's3://yanghonghui'
-                    },
-                    'enable_mc': True
-                  }
+                  NAME: HardDiskBackend
               USE_ROAD_PLANE: True
               DB_INFO_PATH:
                   - kitti_dbinfos_train.pkl

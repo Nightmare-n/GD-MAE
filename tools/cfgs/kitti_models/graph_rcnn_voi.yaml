@@ -68,35 +68,6 @@ MODEL:
         BASE_NAME: dla34
         DOWN_RATIO: 4
         LAST_LEVEL: 5
-        
-    # IMG_HEAD:
-    #     NAME: CenterNetHead
-    #     IN_CHANNEL: 64
-    #     HEAD_CONV: 256
-    #     HEADS: {
-    #         'hm': 3,
-    #         'reg': 2,
-    #         'wh': 2
-    #     }
-
-    #     LOSS_CONFIG:
-    #         weight: 1.0
-    #         code_weights: [1.0, 1.0, 0.1, 0.1]
-
-    #     TARGET_ASSIGNER_CONFIG:
-    #         out_size_factor: 4
-    #         gaussian_overlap: 0.7
-    #         max_objs: 500
-    #         min_radius: 0
-        
-    #     TEST_CONFIG:
-    #         score_threshold: 0.01
-    #         out_size_factor: 4
-    #         nms:
-    #             train:
-    #                 nms_pre_max_size: 100
-    #             test:
-    #                 nms_pre_max_size: 100
 
     VFE:
         NAME: DynVFE
