@@ -23,6 +23,7 @@ pip install numpy==1.19.5 protobuf==3.19.4 scikit-image==0.19.2 waymo-open-datas
 pip install torch-scatter -f https://data.pyg.org/whl/torch-1.10.1+cu111.html
 git clone https://github.com/Nightmare-n/GD-MAE
 cd GD-MAE && python setup.py develop --user
+cd pcdet/ops/dcn && python setup.py develop --user
 ```
 
 ## Data Preparation
