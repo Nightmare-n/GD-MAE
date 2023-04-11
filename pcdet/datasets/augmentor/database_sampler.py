@@ -23,7 +23,7 @@ class DataBaseSampler(object):
         self.use_shared_memory = sampler_cfg.get('USE_SHARED_MEMORY', False)
         
         self.client = getattr(file_client, self.sampler_cfg.BACKEND.NAME)(
-            **self.sampler_cfg.BACKEND.KWARGS
+            **self.sampler_cfg.BACKEND.get('KWARGS', {})
         )
         
         self.fade_epoch = sampler_cfg.get('FADE_EPOCH', 0)
