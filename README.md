@@ -53,7 +53,6 @@ data
 │   │   │── velodyne/
 │   │   │── ...
 │   │── testing
-│   │   │── label_2/
 │   │   │── velodyne/
 │   │   │── ...
 │   │── gt_database/
